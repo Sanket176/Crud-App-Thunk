@@ -1,7 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Navbar = () => {
+    const users = useSelector((state)=>state.app.users)
+    // console.log("IN navbar component, uses data",users);
+
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -29,7 +33,7 @@ const Navbar = () => {
               </li>
               <li className="nav-item">
                 <Link to="/read" className="nav-link" >
-                  All Posts
+                  All Posts ({users.length})
                 </Link>
               </li>
             </ul>
