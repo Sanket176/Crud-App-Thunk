@@ -26,7 +26,6 @@ export const createUser = createAsyncThunk("createUser",async (data, { rejectWit
 //read action
 export const showUser = createAsyncThunk("showUSer", async(_,{ rejectWithValue })=>{//we need to pass "_" for any argumnets to be dispatched.
     //your function must be structured to accept it, even if you don’t plan to use it.
-    console.log("inside showUSer");
     const response = await fetch("https://66f361f471c84d8058788a0c.mockapi.io/crud");//no need to write for GET endpoint
 
     try {
@@ -39,7 +38,19 @@ export const showUser = createAsyncThunk("showUSer", async(_,{ rejectWithValue }
 });
 
 //delete action
+export const deleteUser = createAsyncThunk("deleteUSer", async(id,{ rejectWithValue })=>{//here were are getting id(passed as an argument)
+    const response = await fetch(`https://66f361f471c84d8058788a0c.mockapi.io/crud/${id}`,
+        {method: "DELETE"}   
+    );//this is DELETE API call, it will deltethe user with this id in the backend. Promises is for Frontend here
 
+    try {
+       const result = await response.json();
+       console.log("result after DELETE API call:", result);
+       return result; 
+    } catch (error) {
+        return rejectWithValue(error);
+    }
+});
 
 
 export const userDetail = createSlice({
@@ -77,8 +88,23 @@ export const userDetail = createSlice({
         state.error = action.payload.message;
     });
 
-    //For Edit user
     //For delete user
+    builder.addCase(deleteUser.pending, (state) =>{
+        state.loading = true
+    });
+    builder.addCase(deleteUser.fulfilled, (state, action)=>{
+        state.loading = false;
+        const {id} = action.payload;//taking id from "action.payload"
+       if(id){
+        state.users = state.users.filter((ele)=> ele.id !== id);//filter logic to delete user with id.
+       }
+    });
+    builder.addCase(deleteUser.rejected, (state,action)=>{
+        state.loading = false
+        state.error = action.payload.message;
+    });
+
+    //For Edit user
   },
 });
 

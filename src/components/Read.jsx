@@ -3,10 +3,11 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { showUser } from '../redux/features/useDetailSlice';
+import { deleteUser } from '../redux/features/useDetailSlice';
 import Popup from './Popup';
 
 const Read = () => {
-  // const state = useSelector(state);
+
   const dispatch = useDispatch();
   const [id, setId] = useState(null)
   const [showPopup, setShowPopup] = useState(false);
@@ -25,6 +26,13 @@ const Read = () => {
     setShowPopup(!showPopup);
   }
 
+  function handleDeleteClick(userId){
+    console.log("id of clicked delete users", userId);
+    dispatch(deleteUser(userId));
+  }
+
+  function handleEditClick(){}
+
   if(loading){
     return (<h2>Loading...</h2>)
   }
@@ -41,12 +49,12 @@ const Read = () => {
             <button className="card-link" onClick={()=>handleViewClick(ele.id)}>
               View
             </button>
-            <Link className="card-link">
+            <button className="card-link" onClick={handleEditClick} >
               Edit
-            </Link>
-            <Link className="card-link">
+            </button>
+            <button className="card-link" onClick={()=>handleDeleteClick(ele.id)}>
               Delete
-            </Link>
+            </button>
           </div>
         </div>
 
