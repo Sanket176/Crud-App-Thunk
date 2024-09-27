@@ -9,7 +9,7 @@ import Popup from './Popup';
 const Read = () => {
 
   const dispatch = useDispatch();
-  const [id, setId] = useState(null)
+  const [id, setId] = useState()
   const [showPopup, setShowPopup] = useState(false);
   //STORE->state->app has the data(i.e.  user, loading, error)
   //We are taking users and loading here
@@ -31,8 +31,6 @@ const Read = () => {
     dispatch(deleteUser(userId));
   }
 
-  function handleEditClick(){}
-
   if(loading){
     return (<h2>Loading...</h2>)
   }
@@ -40,6 +38,7 @@ const Read = () => {
   return (
     <div>
       {showPopup && <Popup id={id} setShowPopup={setShowPopup} />}
+      
       <h2>All data</h2>
       {users  && users.map((ele)=>{
           return <div key={ele.id} className="card mx-auto mt-4" style={{ width: "18rem" }}>
@@ -49,12 +48,17 @@ const Read = () => {
             <button className="card-link" onClick={()=>handleViewClick(ele.id)}>
               View
             </button>
-            <button className="card-link" onClick={handleEditClick} >
+
+            <Link to={`/edit/${ele.id}`}>
+            <button className="card-link" >
               Edit
             </button>
+            </Link>
+            
             <button className="card-link" onClick={()=>handleDeleteClick(ele.id)}>
               Delete
             </button>
+           
           </div>
         </div>
 

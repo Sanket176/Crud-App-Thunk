@@ -38,7 +38,7 @@ export const showUser = createAsyncThunk("showUSer", async(_,{ rejectWithValue }
 });
 
 //delete action
-export const deleteUser = createAsyncThunk("deleteUSer", async(id,{ rejectWithValue })=>{//here were are getting id(passed as an argument)
+export const deleteUser = createAsyncThunk("deleteUser", async(id,{ rejectWithValue })=>{//here were are getting id(passed as an argument)
     const response = await fetch(`https://66f361f471c84d8058788a0c.mockapi.io/crud/${id}`,
         {method: "DELETE"}   
     );//this is DELETE API call, it will deltethe user with this id in the backend. Promises is for Frontend here
@@ -46,6 +46,28 @@ export const deleteUser = createAsyncThunk("deleteUSer", async(id,{ rejectWithVa
     try {
        const result = await response.json();
        console.log("result after DELETE API call:", result);
+       return result; 
+    } catch (error) {
+        return rejectWithValue(error);
+    }
+});
+
+//update action
+export const updateUser = createAsyncThunk("updateUser", async(data,{ rejectWithValue })=>{//here were are getting user to be update data
+    console.log("data to be edited ", data);
+    const response = await fetch(`https://66f361f471c84d8058788a0c.mockapi.io/crud/${data.id}`,
+    {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+
+    try {
+       const result = await response.json();
+       console.log("result after Edit API call:", result);
        return result; 
     } catch (error) {
         return rejectWithValue(error);
@@ -68,7 +90,7 @@ export const userDetail = createSlice({
     });
     builder.addCase(createUser.fulfilled, (state, action)=>{
         state.loading = false
-        state.users.push(action.payload);//add your new data (i.e payload by action) in tot he existing data
+        state.users.push(action.payload);//add your new data (i.e payload by action) in to the existing data
     });
     builder.addCase(createUser.rejected, (state,action)=>{
         state.loading = false
@@ -104,7 +126,22 @@ export const userDetail = createSlice({
         state.error = action.payload.message;
     });
 
-    //For Edit user
+    //For Update user
+    builder.addCase(updateUser.pending, (state) =>{
+        state.loading = true
+    });
+    builder.addCase(updateUser.fulfilled, (state, action)=>{
+        state.loading = false;
+        console.log("action.payload in edit:",action.payload);
+        state.users = state.users.map((ele)=>{
+            return ele.id === action.payload.id ? action.payload : ele;//if coming user id is matching, then update that user with new values or it will be same data(ele)
+        }) 
+    });
+    builder.addCase(updateUser.rejected, (state,action)=>{
+        state.loading = false
+        state.error = action.payload.message
+    });
+
   },
 });
 
