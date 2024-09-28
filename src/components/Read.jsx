@@ -13,7 +13,7 @@ const Read = () => {
   const [showPopup, setShowPopup] = useState(false);
   //STORE->state->app has the data(i.e.  user, loading, error)
   //We are taking users and loading here
-  const {users, loading} = useSelector((state)=> state.app);
+  const {users, loading, searchData} = useSelector((state)=> state.app);
 
   //to hit the API on page reload. Need dispatch to trigger the API to show data
   useEffect(() => {
@@ -40,7 +40,18 @@ const Read = () => {
       {showPopup && <Popup id={id} setShowPopup={setShowPopup} />}
       
       <h2>All data</h2>
-      {users  && users.map((ele)=>{
+      {users  && 
+      
+      users.filter((ele)=>{
+        if(!searchData){//if no searchData, then return the 
+          return ele; 
+        }else{
+          return ele.name.toLowerCase().includes(searchData.toLowerCase());
+        }
+      })
+      
+      // 1st check filter data, then will map over that data
+      .map((ele)=>{
           return <div key={ele.id} className="card mx-auto mt-4" style={{ width: "18rem" }}>
           <div  className="card-body my-3">
             <h5 className="card-title">{ele.name}</h5>

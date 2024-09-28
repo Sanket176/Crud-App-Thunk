@@ -1,10 +1,17 @@
-import React from 'react'
+import React,{useEffect, useState} from 'react'
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { searchUser } from '../redux/features/useDetailSlice';
 
 const Navbar = () => {
-    const users = useSelector((state)=>state.app.users)
-    // console.log("IN navbar component, uses data",users);
+    const users = useSelector((state)=>state.app.users);
+    const dispatch = useDispatch();
+    const [searchData, setSearchData] = useState("");
+
+    //as page mount or searchData changes, dispatch this data into the store.
+    useEffect(()=>{
+      dispatch(searchUser(searchData));
+    },[searchData])
 
   return (
     <>
@@ -37,16 +44,15 @@ const Navbar = () => {
                 </Link>
               </li>
             </ul>
-            <form className="d-flex" role="search">
+            <form className="d-flex w-50" role="search">
               <input
-                className="form-control me-2 w-50"
+                className="form-control me-2 w-100"
                 type="search"
-                placeholder="Search"
+                value={searchData}
+                placeholder="Search..."
                 aria-label="Search"
+                onChange={(e)=>setSearchData(e.target.value)}
               />
-              <button className="btn btn-outline-success" type="submit">
-                Search
-              </button>
             </form>
           </div>
         </div>

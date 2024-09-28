@@ -81,6 +81,13 @@ export const userDetail = createSlice({
     users: [],
     loading: false,
     error: null,
+    searchData: [],
+  },
+
+  reducers: {
+    searchUser: (state, action) =>{
+        state.searchData = action.payload;
+    },
   },
 
   extraReducers: (builder) => {//We'll handle PROMISE here
@@ -146,3 +153,6 @@ export const userDetail = createSlice({
 });
 
 export default userDetail.reducer;
+
+//the way to export reducers
+export const {searchUser} = userDetail.actions;
