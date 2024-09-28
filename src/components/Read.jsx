@@ -94,11 +94,7 @@ const Read = () => {
           // 1st check filter data, then will map over that data
           .map((ele) => {
             return (
-              <div
-                key={ele.id}
-                className="card mx-auto mt-4"
-                style={{ width: "18rem" }}
-              >
+              <div key={ele.id} className="card mx-auto mt-4" style={{ width: "18rem" }}>
                 <div className="card-body my-3">
                   <h5 className="card-title">{ele.name}</h5>
                   <h6 className="card-subtitle mb-2 text-muted">
@@ -109,11 +105,11 @@ const Read = () => {
                     onClick={() => handleViewClick(ele.id)}
                   >
                     View
-                  </button>
+                  </button>{" "}
 
                   <Link to={`/edit/${ele.id}`}>
                     <button className="card-link">Edit</button>
-                  </Link>
+                  </Link>{" "}
 
                   <button
                     className="card-link"

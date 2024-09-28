@@ -40,6 +40,7 @@ const Update = () => {
   return (
     <div>
       <h2 className="my-2">Edit the data</h2>
+
       <form className="w-50 mx-auto my-5" onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className="form-label">Name</label>
@@ -105,7 +106,8 @@ const Update = () => {
 
         <button type="submit" className="btn btn-primary">
           Submit
-        </button>
+        </button>{" "}
+        <button className="btn btn-primary" onClick={()=>navigate("/read")}>Back</button>
       </form>
     </div>
   )
